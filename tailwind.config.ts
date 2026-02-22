@@ -11,6 +11,12 @@ export default {
   theme: {
     extend: {
       colors: {
+        "dark-green": "hsl(var(--dark-green))",
+        "mint-green": "hsl(var(--mint-green))",
+        "light-mint": "hsl(var(--light-mint))",
+        "bg-pale": "hsl(var(--bg-pale-green))",
+        "price-green": "hsl(var(--price-green))",
+        "body-text": "hsl(var(--body-text))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

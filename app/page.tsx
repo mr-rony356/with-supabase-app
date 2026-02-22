@@ -1,58 +1,85 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
+import {
+  Header,
+  HeroBanner,
+  ServiceCard,
+  CategoryNavigation,
+  ProductCard,
+  LocationCard,
+  Footer,
+} from "@/components/ecommerce";
 import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
-import Link from "next/link";
+import { Bike, Package, UtensilsCrossed } from "lucide-react";
 import { Suspense } from "react";
+import {
+  popularProducts,
+  pizzaProducts,
+  locations,
+} from "@/lib/data/products";
+import { hasEnvVars } from "@/lib/utils";
+import { EnvVarWarning } from "@/components/env-var-warning";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
-            </div>
-            {!hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
-              <Suspense>
-                <AuthButton />
-              </Suspense>
-            )}
+    <div className="flex min-h-screen flex-col bg-background">
+      <Suspense fallback={null}>
+        {!hasEnvVars && (
+          <div className="border-b border-amber-200 bg-amber-50 px-4 py-2">
+            <EnvVarWarning />
           </div>
-        </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
-        </div>
+        )}
+      </Suspense>
+      <Header>
+        <Suspense fallback={null}>
+          <AuthButton />
+        </Suspense>
+      </Header>
+      <main className="flex-1">
+        <div className="container mx-auto max-w-7xl space-y-10 px-3 py-6 sm:space-y-12 sm:px-4 sm:py-8 md:px-6">
+          <HeroBanner />
 
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
-        </footer>
-      </div>
-    </main>
+          <section className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            <ServiceCard
+              icon={Bike}
+              title="Quick delivery"
+              description="All you can do is just order and we can deliver within 5 mins"
+            />
+            <ServiceCard
+              icon={Package}
+              title="Easy pickup"
+              description="Order ahead and pick up at your convenience"
+            />
+            <ServiceCard
+              icon={UtensilsCrossed}
+              title="Super Dine-in"
+              description="Enjoy fresh meals in our cozy restaurant"
+            />
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-xl font-bold text-body-text sm:mb-4 sm:text-2xl">
+              Most Popular
+            </h2>
+            <CategoryNavigation />
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+              {popularProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-xl font-bold text-body-text sm:mb-4 sm:text-2xl">
+              Our Pizzas
+            </h2>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+              {pizzaProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }
